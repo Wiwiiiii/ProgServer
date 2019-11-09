@@ -4,68 +4,60 @@
   <title>
     JS - Liste ADD Memory
   </title>
-
 </head>
-<form class="form">
-  <input type="button" id="add" value="Add New">
-  <ul id="list_item"></ul>
-  <input type="text" class="item" id="input_text">
-  <input type="date" class="item" id="input_date">
-</form>
-
-
-<script>
-  /*document.getElementById("add").onclick = function () {
-    var node = document.createElement("li");
-    var text = document.getElementById("user_input").value;
-    var textnode = document.createTextNode(text);
-    node.appendChild(textnode);
-    document.getElementById("list_item").appendChild(node);
-  }*/
-
-
-  //On sélectonne les éléments HTML
-  const form = document.getElementsByClassName('form')
-  const ul = document.getElementById('list_item')
-  const input_text = document.getElementById('input_text')
-  const input_date = document.getElementById('input_date')
-  //On affiche la save fait avec localStorage avec la clé items
-  let itemsArray = localStorage.getItem('items') ? JSON.parse(localStorage.getItem('items')) : []
-
-  //Initialisation de la save
-  localStorage.setItem('items', JSON.stringify(itemsArray))
-  const data = JSON.parse(localStorage.getItem('items'))
-
-  //On ajoute les li+val à la liste
-  const liMaker = text => {
-    const li = document.createElement('li')
-    li.textContent = text
-    var button = document.createElement("button")
-    button.innerHTML = "Edit"
-    button.setAttribute('onClick', '')
-    li.appendChild(button)
-    ul.appendChild(li)
-  }
-
-  //On initialise la save et on y met les valeurs des li dans un tab
-  document.getElementById("add").onclick = function () {
-    itemsArray.push(input_text.value + " " + input_date.value)
-    localStorage.setItem('items', JSON.stringify(itemsArray))
-    liMaker(input_text.value + " " +input_date.value)
-    input_text.value = ''
-    input_date.value = ''
-  }
-
-  data.forEach(item => {
-    liMaker(item)
-  })
-
-</script>
-
-
 
 <body>
+  <form id="form">
+    <input type="text" class="item" id="input_text" required>
+    <input type="date" class="item" id="input_date" required>
+    <input type="submit" value="Add New">
+    <ul id="list_item"></ul>
+  </form>
 
+
+  <script>
+    // On sélectonne les éléments HTML
+    const form = document.getElementById('form');
+    const ul = document.getElementById('list_item');
+    const input_text = document.getElementById('input_text');
+    const input_date = document.getElementById('input_date');
+    // On affiche la save fait avec localStorage avec la clé items
+    const itemsArray = localStorage.getItem('items') ? JSON.parse(localStorage.getItem('items')) : [];
+
+    //On ajoute les li+val à la liste
+    const liMaker = text => {
+      const li = document.createElement('li');
+      li.textContent = text;
+      var button = document.createElement("button");
+      button.innerHTML = "Edit";
+      button.setAttribute('onClick', '');
+      li.appendChild(button);
+      ul.appendChild(li);
+    }
+
+    //On initialise la save et on y met les valeurs des li dans un tab
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      itemsArray.push(input_text.value + " " + input_date.value);
+      localStorage.setItem('items', JSON.stringify(itemsArray));
+      liMaker(input_text.value + " " + input_date.value);
+      input_text.value = '';
+      input_date.value = '';
+      input_text.focus();
+    });
+
+    itemsArray.forEach(item => {
+      liMaker(item)
+    })
+
+    /**
+     * Utilise le plein potentiel de la balise <form> ( required, onsubmit, ...)
+     * le contenu doit toujours être dans la balise <body>
+     * Eviter de récupérer la meme valeur plusieurs fois (data === itemsArray)
+
+    */
+  </script>
 </body>
 
 </html>
