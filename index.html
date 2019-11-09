@@ -6,10 +6,10 @@
   </title>
 
 </head>
-<form>
+<form class="form">
   <input type="button" id="add" value="Add New">
   <ul id="list_item"></ul>
-  <input type="text" id="item" name="name">
+  <input type="text" id="item">
 </form>
 
 
@@ -22,9 +22,16 @@
     document.getElementById("list_item").appendChild(node);
   }*/
 
+  var date = Date();
+
+  // Converting the number of millisecond in date string
+  convert = date.toString()
+  // Printing the current date
+
+
   //On sélectonne les éléments HTML
-  const form = document.querySelector('form')
-  const ul = document.querySelector('ul')
+  const form = document.getElementsByClassName('form')
+  const ul = document.getElementById('list_item')
   const input = document.getElementById('item')
   //On affiche la save fait avec localStorage avec la clé items
   let itemsArray = localStorage.getItem('items') ? JSON.parse(localStorage.getItem('items')) : []
@@ -36,13 +43,13 @@
   //On ajoute les li+val à la liste
   const liMaker = text => {
     const li = document.createElement('li')
-    li.textContent = text
+    li.textContent =text + " " + date
     ul.appendChild(li)
   }
 
   //On initialise la save et on y met les valeurs des li dans un tab
   document.getElementById("add").onclick = function () {
-    itemsArray.push(input.value)
+    itemsArray.push(input.value, date)
     localStorage.setItem('items', JSON.stringify(itemsArray))
     liMaker(input.value)
     input.value = ''
